@@ -8,4 +8,9 @@ If your house have wired smoke detector, you can modify the visonic sensor into 
   </p>  
   
   - modify the visonic similar to what we did with water/leak sensor
-  - then connect the two wires from the sensor to the 
+  - usually the relay should have 6 wires, see the diagram below.
+  
+  <p align="center">
+    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/rm4-relay.jpg" width=300 hspace=10/>
+  </p>  
+  
