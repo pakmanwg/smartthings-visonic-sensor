@@ -10,8 +10,8 @@ With the handler, you can select the sensor type to match the modification made 
 Here are some snapshots when the sensors are being modified to different purposes.
 
 <p align="center">
-  <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2132.PNG" width=250 hspace=25/>
-  <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2135.PNG" width=250 hspace=25/>
+  <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2132.PNG" width=250 hspace=20/>
+  <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2135.PNG" width=250 hspace=20/>
   <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2136.PNG" width=250/>
 </p>
 
