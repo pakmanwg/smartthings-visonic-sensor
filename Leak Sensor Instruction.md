@@ -6,8 +6,7 @@ Instructions to modify visonic contact sensor to water/leak sensor
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2137.JPG" width=300 hspace=10/>
   </p>
 
-- locate the relay on the side, it has a clear plastic wrap around a wire. Make a cut in the middle and remove the broken plastic
-  - bent the two wires downward, temporary put it back into case and mark the positions to drill holes
+  - locate the relay on the side, it has a clear plastic wrap around a wire. Make a cut in the middle and remove the broken plastic and bent the two wires downward, temporary put it back into case and mark the positions to drill holes
   
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2138.JPG" width=300 hspace=10/>
