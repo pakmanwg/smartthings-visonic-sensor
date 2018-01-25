@@ -1,4 +1,4 @@
-Instructions to modify visonic contact sensor into a water/leak sensor
+# Instructions to modify visonic contact sensor into a water/leak sensor
 
   - open the sensor and take out the battery and the motherboard, the case should be pretty easy to open by knife
 
