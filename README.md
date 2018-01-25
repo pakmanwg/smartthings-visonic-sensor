@@ -23,4 +23,12 @@ Here are the settings menu
   <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2134.PNG" width=250 hspace=20/>
 </p>
 
+I am here included simple instruction to modify the sensor into 3 different type of sensors.
 
+
+Instruction to modify visonic constact sensor to water/leak sensor
+  - open the sensor and take out the battery and the motherboard, the case should be pretty easy to open by knife
+  - locate the relay on the side, it has a clear plastic wrap around a wire. Make a cut in the middle and remove the broken plastic
+  - bent the two wires downward, temporary put it back into case and mark the positions to drill holes
+  - drill two holes on the case so the wire can go thru
+  - put everythings back and now the sensor become a water/leak sensor, test it by putting the sensor on top of drops of water so the wires touching the water
