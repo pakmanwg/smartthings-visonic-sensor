@@ -23,3 +23,5 @@
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2140.JPG" width=300 hspace=10/>
   </p>
+  
+  - pair the sensor with smartthings, in the settings menu select water sensor as the sensor function. Then you are done.
