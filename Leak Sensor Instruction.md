@@ -1,4 +1,4 @@
-Instructions to modify visonic contact sensor to water/leak sensor
+Instructions to modify visonic contact sensor into a water/leak sensor
 
   - open the sensor and take out the battery and the motherboard, the case should be pretty easy to open by knife
 
@@ -12,7 +12,7 @@ Instructions to modify visonic contact sensor to water/leak sensor
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2138.JPG" width=300 hspace=10/>
   </p>
   
-  - drill two holes on the case so the wires can go thru
+  - drill two holes on the case so the wires can go thru, you may need to remove the sticker at the back
   
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2139.JPG" width=300 hspace=10/>
