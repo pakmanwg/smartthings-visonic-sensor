@@ -36,8 +36,8 @@ Instruction to modify visonic contact sensor to water/leak sensor
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2138.JPG" width=300 hspace=10/>
   </p>
   
-  - drill two holes on the case so the wire can go thru
-  - put everythings back and now the sensor become a water/leak sensor, test it by putting the sensor on top of drops of water so the wires touching the water
+  - drill two holes on the case so the wires can go thru
+  - put everything back together and you have the a water/leak sensor
   
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2139.JPG" width=300 hspace=10/>
