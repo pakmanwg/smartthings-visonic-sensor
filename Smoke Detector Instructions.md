@@ -11,6 +11,6 @@ If your house have wired smoke detector, you can modify the visonic sensor into 
   - usually the relay should have 6 wires, see the diagram below.
   
   <p align="center">
-    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/rm4-relay.jpg" width=300 hspace=10/>
+    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/firex-501-diagram2-large.jpg" width=300 hspace=10/>
   </p>  
   
