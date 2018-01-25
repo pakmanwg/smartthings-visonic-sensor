@@ -16,7 +16,7 @@ Here are some snapshots when the sensors are being modified to different purpose
   <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2136.PNG" width=250 hspace=10/>
 </p>
 
-Here are the setting menu
+Here are the settings menu
 
 <p align="center">
   <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2133.PNG" width=250 hspace=10/>
