@@ -7,7 +7,7 @@ The sensor can be easily modified to use as
   - tilt sensor, mailbox sensor, garage door sensor
 
 With the handler, you can select the sensor type to match the modification made to the sensor.
-Here are some snapshots when the sensors are being modified to different purposes.
+Here are some snapshots when the sensors are being modified for different functions.
 
 
 <p align="center">
