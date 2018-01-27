@@ -4,7 +4,7 @@ If your house have wired smoke detector, you can modify the visonic sensor into 
   - purchase the smoke alarm relay compatible with your smoke alarm
   
   <p align="center">
-    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/rm4-relay.jpg" width=300 hspace=10/>
+    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/Relay.jpg" width=300 hspace=10/>
   </p>  
   
   - modify the visonic similar to what we did with water/leak sensor
@@ -12,7 +12,7 @@ If your house have wired smoke detector, you can modify the visonic sensor into 
   
   
   <p align="center">
-    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/firex-501-diagram2-large.jpg" width=600 hspace=10/>
+    <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/Relay_Diagram.jpg" width=600 hspace=10/>
   </p>  
   
    - what we want to do is to connect or solder the two wires coming out of the sensor to the common and normally open terminal of the relay. Leave the normally closed terminal open. And connect the hot, neutral and interconnect terminals to the alarm. The device handler is coded for the normally open terminal and common connection. If you want to use the normally closed terminal instead, you can change the logic in the device handler.
