@@ -13,7 +13,7 @@
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2147.JPG" width=300 hspace=10/>
   </p> 
    
-  - You can mount it vertically onto the garage door or mailbox door as shown.
+  - You can mount it vertically onto the garage door or mailbox door as shown. Placed the battery side of the sensor pointing toward ground.
    
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2146.JPG" width=300 hspace=10/>
