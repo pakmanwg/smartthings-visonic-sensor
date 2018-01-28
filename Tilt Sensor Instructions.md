@@ -20,5 +20,5 @@
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2145.JPG" width=300 hspace=10/>
   </p> 
   
-  - once you wire up everything, you can pair the sensor with smartthings. After pairing, go to settings menu for the device and select contact sensor in sensor function, then you are done. Notice that we are using the same sensor function as window/door sensor.
+  - Pair the sensor with smartthings. After pairing, go to settings menu for the device and select contact sensor in sensor function, then you are done. Notice that we are using the same sensor function as window/door sensor.
 
