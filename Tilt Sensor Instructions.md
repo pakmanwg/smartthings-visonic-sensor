@@ -6,7 +6,7 @@
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/mercury_switch.jpg" width=300 hspace=10/>
   </p> 
   
-  - the switch will be closed when it is in vertical position and it will be opened when it tilt away from vertical position.
+  - the switch will be closed when it is in vertical position and it will be opened when it is tilted away from vertical position.
   - take out the motherboard of the visonic sensor and unsolder the relay from the motherboard, then solder the mercury switch to the motherboard. Adjust the position of the mercury switch head as show below
    
   <p align="center">
