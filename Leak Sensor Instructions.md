@@ -18,7 +18,7 @@
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2139.JPG" width=300 hspace=10/>
   </p>
 
-  - put everything back together and you have the a water/leak sensor
+  - put everything back together and now you have a water/leak sensor
   
   <p align="center">
     <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2140.JPG" width=300 hspace=10/>
