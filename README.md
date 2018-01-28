@@ -1,7 +1,7 @@
 # smartthings-visonic-sensor
 An alternative device handler for Visonic MCT-340 contact sensor
 
-The sensor can be easily modified to use as
+The sensor can be easily modified to one of the followings fairly easily
   - leak sensor
   - wired smoke detector
   - tilt sensor, mailbox sensor, garage door sensor
