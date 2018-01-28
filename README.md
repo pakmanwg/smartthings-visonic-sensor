@@ -24,4 +24,4 @@ Here are the settings menu
   <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2134.PNG" width=250 hspace=20/>
 </p>
 
-Instruction for modification are included in other document files.
+Instruction for modifications are included in other document files.
