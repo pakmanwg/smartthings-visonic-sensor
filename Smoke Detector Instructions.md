@@ -16,7 +16,8 @@ If your house have wired smoke detector, you can modify the visonic sensor into 
   </p>  
   
    - what we want to do is to connect or solder the two wires coming out of the sensor to the common and normally open terminal of the relay. Leave the normally closed terminal open. And connect the hot, neutral and interconnect terminals to the alarm. The device handler is coded for the normally open terminal and common connection. If you want to use the normally closed terminal instead, you can change the logic in the device handler.
-   - I put the relay and the sensor inside one of the alarm as shown, it is a little bit tight but work
+   
+   - I put the relay and the sensor inside one of the alarm as shown, it is a little bit tight.
    
    <p align="center">
      <img src = "https://github.com/pakmanwg/smartthings-visonic-sensor/blob/master/IMG_2150.JPG" width=300 hspace=10/>
