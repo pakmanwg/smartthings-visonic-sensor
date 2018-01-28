@@ -6,8 +6,9 @@ The sensor can be easily modified to one of the followings fairly easily
   - wired smoke detector
   - tilt sensor, mailbox sensor, garage door sensor
 
-With the handler, you can select the sensor type to match the modification made to the sensor.
+With this handler, you can select the sensor type to match the modification made to the sensor.
 Here are some snapshots when the sensors are being modified for different functions.
+
 
 
 <p align="center">
