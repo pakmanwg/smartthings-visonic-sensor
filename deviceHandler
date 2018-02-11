@@ -16,7 +16,8 @@
  *  Author: pakmanw@sbcglobal.net
  *
  *  Change Log
- *  2018-1-5 - v01.01 Created 
+ *  2018-01-05 - v01.01 Created 
+ *  2018-02-10 - v01.02 fix actiontile smoke detection issue
  *
  */
 
@@ -59,7 +60,7 @@ metadata {
                 attributeState "dry", label: '${name}', icon: "st.alarm.water.dry", backgroundColor: "#00A0DC"
                 attributeState "wet", label: '${name}', icon: "st.alarm.water.wet", backgroundColor: "#e86d13"
                 attributeState "clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
-                attributeState "smoke", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
+                attributeState "detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
             }
         }
 
@@ -191,7 +192,7 @@ private Map getStatus() {
                 state.status = state.alarmSet ? "dry" : "wet"
                 return getWaterResult(state.status)
             case "Smoke Detector":
-                state.status = state.alarmSet ? "clear" : "smoke"
+                state.status = state.alarmSet ? "clear" : "detected"
                 return getSmokeResult(state.status);
         }
     }
@@ -277,7 +278,7 @@ private Map getWaterResult(value) {
 private Map getSmokeResult(value) {
     log.debug 'Smoke Status'
     def linkText = getLinkText(device)
-    def descriptionText = "${linkText} was ${value == 'clear' ? 'clear' : 'smoke'}"
+    def descriptionText = "${linkText} was ${value == 'clear' ? 'clear' : 'detected'}"
     return [
         name: 'smoke',
         value: value,
@@ -361,7 +362,7 @@ def updated() {
         def descriptionText = "Updating device to contact sensor"
         if (device.latestValue("status") == "dry" || device.latestValue("status") == "clear") {
             sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
-        } else if (!device.latestValue("status") || device.latestValue("status") == "wet" || device.latestValue("status") == "smoke") {
+        } else if (!device.latestValue("status") || device.latestValue("status") == "wet" || device.latestValue("status") == "detected") {
             sendEvent(name: 'status', value: 'closed', descriptionText: descriptionText, translatable: true)
         }
     } else if (function == "Water Sensor") {
@@ -369,7 +370,7 @@ def updated() {
         def descriptionText = "Updating device to water sensor"
         if (!device.latestValue("status") || device.latestValue("status") == "open" || device.latestValue("status") == "clear") {
             sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
-        } else if (device.latestValue("status") == "closed" || device.latestValue("status") == "smoke") {
+        } else if (device.latestValue("status") == "closed" || device.latestValue("status") == "detected") {
             sendEvent(name: 'status', value: 'wet', descriptionText: descriptionText, translatable: true)
         }
     } else if (function == "Smoke Detector") {
@@ -378,7 +379,7 @@ def updated() {
         if (!device.latestValue("status") || device.latestValue("status") == "open" || device.latestValue("status") == "dry") {
             sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
         } else if (device.latestValue("status") == "closed" || device.latestValue("status") == "wet") {
-            sendEvent(name: 'status', value: 'smoke', descriptionText: descriptionText, translatable: true)
+            sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
         }
     }
 }
