@@ -88,21 +88,6 @@ metadata {
         standardTile("configure", "device.configure", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
             state "configure", label:'', action:"configuration.configure", icon:"st.secondary.configure"
         }
-        
-        standardTile("contact", "device.contact", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-            state("open", label: '${name}', icon: "st.contact.contact.open", backgroundColor: "#e86d13")
-            state("closed", label: '${name}', icon: "st.contact.contact.closed", backgroundColor: "#00A0DC")
-        }
-        
-        standardTile("smoke", "device.smoke", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-            state("clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC")
-            state("detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13")
-        }
-        
-        standardTile("water", "device.water", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-            state("dry", label: '${name}', icon: "st.alarm.water.dry", backgroundColor: "#00A0DC")
-            state("wet", label: '${name}', icon: "st.alarm.water.wet", backgroundColor: "#e86d13")
-        }
 
         main(["status", "temperature"])
         details(["status", "temperature", "battery", "refresh", "configure"])
@@ -202,12 +187,15 @@ private Map getStatus() {
         switch (function) {
             case "Contact Sensor":
                 state.status = state.alarmSet ? "open" : "closed"
+                sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getContactResult(state.status)
             case "Water Sensor":
                 state.status = state.alarmSet ? "dry" : "wet"
+                sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getWaterResult(state.status)
             case "Smoke Detector":
                 state.status = state.alarmSet ? "clear" : "detected"
+                sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getSmokeResult(state.status);
         }
     }
