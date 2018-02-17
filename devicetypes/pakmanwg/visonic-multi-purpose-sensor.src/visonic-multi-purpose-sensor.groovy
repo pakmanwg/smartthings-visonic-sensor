@@ -18,6 +18,7 @@
  *  Change Log
  *  2018-01-05 - v01.01 Created 
  *  2018-02-10 - v01.02 fix actiontile smoke detection issue
+ *  2018-02-17 - v01.03 support smoke detector closed as clear
  *
  */
 
@@ -48,7 +49,7 @@ metadata {
     preferences {
         input title: "Temperature Offset", description: "This feature allows you to correct any temperature variations by selecting an offset. Ex: If your sensor consistently reports a temp that's 5 degrees too warm, you'd enter \"-5\". If 3 degrees too cold, enter \"+3\".", displayDuringSetup: false, type: "paragraph", element: "paragraph"
         input "tempOffset", "number", title: "Degrees", description: "Adjust temperature by this many degrees", range: "*..*", displayDuringSetup: false
-        input "function", "enum", title: "Sensor Function", options : ["Contact Sensor", "Water Sensor", "Smoke Detector"], defaultValue: "Contact Sensor", required: false, displayDuringSetup: true
+        input "function", "enum", title: "Sensor Function", options : ["Contact Sensor", "Water Sensor", "Smoke Detector", "Smoke Detector Closed as Clear"], defaultValue: "Contact Sensor", required: false, displayDuringSetup: true
     }
 
     tiles(scale: 2) {
@@ -61,6 +62,8 @@ metadata {
                 attributeState "wet", label: '${name}', icon: "st.alarm.water.wet", backgroundColor: "#e86d13"
                 attributeState "clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
                 attributeState "detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
+                attributeState "clear_cc", label: "clear", icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
+                attributeState "detected_cc", label: "detected", icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
             }
         }
 
@@ -197,6 +200,10 @@ private Map getStatus() {
                 state.status = state.alarmSet ? "clear" : "detected"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getSmokeResult(state.status);
+            case "Smoke Detector Closed as Clear":
+                state.status = state.alarmSet ? "detected_cc" : "clear_cc"
+                sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
+                return getSmokeCcResult(state.status);
         }
     }
     state.status = state.alarmSet ? "open" : "closed"
@@ -289,6 +296,17 @@ private Map getSmokeResult(value) {
     ]
 }
 
+private Map getSmokeCcResult(value) {
+    log.debug 'Smoke Status'
+    def linkText = getLinkText(device)
+    def descriptionText = "${linkText} was ${value == 'clear_cc' ? 'clear' : 'detected'}"
+    return [
+        name: 'smoke',
+        value: value,
+        descriptionText: descriptionText
+    ]
+}
+
 /**
  * PING is used by Device-Watch in attempt to reach the Device
  * */
@@ -360,29 +378,37 @@ private byte[] reverseArray(byte[] array) {
 
 def updated() {
     log.debug "updated called, function ${function}"
-    if (function == "Contact Sensor") {
-        log.debug "update to contact sensor"
-        def descriptionText = "Updating device to contact sensor"
-        if (device.latestValue("status") == "dry" || device.latestValue("status") == "clear") {
-            sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
-        } else if (!device.latestValue("status") || device.latestValue("status") == "wet" || device.latestValue("status") == "detected") {
-            sendEvent(name: 'status', value: 'closed', descriptionText: descriptionText, translatable: true)
-        }
-    } else if (function == "Water Sensor") {
+    if (function == "Water Sensor") {
         log.debug "update to water sensor"
         def descriptionText = "Updating device to water sensor"
-        if (!device.latestValue("status") || device.latestValue("status") == "open" || device.latestValue("status") == "clear") {
+        if (!device.status || device.status == "open" || device.status == "clear"  || device.status == "detected_cc") {
             sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
-        } else if (device.latestValue("status") == "closed" || device.latestValue("status") == "detected") {
+        } else {
             sendEvent(name: 'status', value: 'wet', descriptionText: descriptionText, translatable: true)
         }
     } else if (function == "Smoke Detector") {
         log.debug "update to smoke detector"
         def descriptionText = "Updating device to smoke detector"
-        if (!device.latestValue("status") || device.latestValue("status") == "open" || device.latestValue("status") == "dry") {
+        if (!device.status || device.status == "open" || device.status == "dry" || device.status == "detected_cc") {
             sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
-        } else if (device.latestValue("status") == "closed" || device.latestValue("status") == "wet") {
+        } else {
             sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
+        }
+    } else if (function == "Smoke Detector Closed as Clear") {
+        log.debug "update to smoke detector closed as clear"
+        def descriptionText = "Updating device to smoke detector closed as clear"
+        if (!device.status || device.status == "open" || device.status == "dry" || device.status == "clear") {
+            sendEvent(name: 'status', value: 'detected_cc', descriptionText: descriptionText, translatable: true)
+        } else {
+            sendEvent(name: 'status', value: 'clear_cc', descriptionText: descriptionText, translatable: true)
+        }
+    } else {
+        log.debug "update to contact sensor"
+        def descriptionText = "Updating device to contact sensor"
+        if (device.status == "dry" || device.status == "clear" || device.status == "detected_cc") {
+            sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
+        } else {
+            sendEvent(name: 'status', value: 'closed', descriptionText: descriptionText, translatable: true)
         }
     }
 }
