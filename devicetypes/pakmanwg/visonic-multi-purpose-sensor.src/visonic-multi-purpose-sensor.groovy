@@ -19,6 +19,7 @@
  *  2018-01-05 - v01.01 Created 
  *  2018-02-10 - v01.02 fix actiontile smoke detection issue
  *  2018-02-17 - v01.03 support smoke detector closed as clear
+ *  2018-02-17 - v01.04 fix smart monitor issues with smoke detector closed as clear
  *
  */
 
@@ -62,8 +63,6 @@ metadata {
                 attributeState "wet", label: '${name}', icon: "st.alarm.water.wet", backgroundColor: "#e86d13"
                 attributeState "clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
                 attributeState "detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
-                attributeState "clear_cc", label: "clear", icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
-                attributeState "detected_cc", label: "detected", icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
             }
         }
 
@@ -201,13 +200,15 @@ private Map getStatus() {
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getSmokeResult(state.status);
             case "Smoke Detector Closed as Clear":
-                state.status = state.alarmSet ? "detected_cc" : "clear_cc"
+                state.status = state.alarmSet ? "detected" : "clear"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
-                return getSmokeCcResult(state.status);
+                return getSmokeResult(state.status);
         }
+    } else {
+         function = "Contact Sensor"
+         state.status = state.alarmSet ? "open" : "closed"
+         return getContactResult(state.status)
     }
-    state.status = state.alarmSet ? "open" : "closed"
-    return getContactResult(state.status)
 }
 
 private Map parseIasMessage(String description) {
@@ -296,17 +297,6 @@ private Map getSmokeResult(value) {
     ]
 }
 
-private Map getSmokeCcResult(value) {
-    log.debug 'Smoke Status'
-    def linkText = getLinkText(device)
-    def descriptionText = "${linkText} was ${value == 'clear_cc' ? 'clear' : 'detected'}"
-    return [
-        name: 'smoke',
-        value: value,
-        descriptionText: descriptionText
-    ]
-}
-
 /**
  * PING is used by Device-Watch in attempt to reach the Device
  * */
@@ -377,39 +367,51 @@ private byte[] reverseArray(byte[] array) {
 }
 
 def updated() {
-    log.debug "updated called, function ${function}"
-    if (function == "Water Sensor") {
-        log.debug "update to water sensor"
-        def descriptionText = "Updating device to water sensor"
-        if (!device.status || device.status == "open" || device.status == "clear"  || device.status == "detected_cc") {
-            sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
+    if (!prev_function) {
+        prev_function = "Contact Sensor"
+    }
+    if (prev_function != function) {
+        log.debug "updated called change from ${prev_function} to ${function}"
+        if (function == "Water Sensor") {
+            log.debug "update to water sensor"
+            def descriptionText = "Updating device to water sensor"
+            if (!device.status || device.status == "open" || 
+                (device.status == "clear" && prev_function == "Smoke Detector") || 
+                (device.status == "detected" && prev_function == "Smoke Detector Closed as Clear")) {
+                sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
+            } else {
+                sendEvent(name: 'status', value: 'wet', descriptionText: descriptionText, translatable: true)
+            }
+        } else if (function == "Smoke Detector") {
+            log.debug "update to smoke detector"
+            def descriptionText = "Updating device to smoke detector"
+            if (!device.status || device.status == "open" || device.status == "dry" || 
+                (device.status == "detected" && prev_function == "Smoke Detector Closed as Clear")) {
+                sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
+            } else {
+                sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
+            }
+        } else if (function == "Smoke Detector Closed as Clear") {
+            log.debug "update to smoke detector closed as clear"
+            def descriptionText = "Updating device to smoke detector closed as clear"
+            if (!device.status || device.status == "open" || device.status == "dry" || 
+                (device.status == "clear" && prev_function == "Smoke Detector")) {
+                sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
+            } else {
+                sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
+            }
         } else {
-            sendEvent(name: 'status', value: 'wet', descriptionText: descriptionText, translatable: true)
+            log.debug "update to contact sensor"
+            def descriptionText = "Updating device to contact sensor"
+            if (device.status == "dry" || 
+                (device.status == "clear" && prev_function == "Smoke Detector") ||
+                (device.status == "detected" && prev_function == "Smoke Detector Closed as Clear")) {
+                sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
+            } else {
+                sendEvent(name: 'status', value: 'closed', descriptionText: descriptionText, translatable: true)
+            }
         }
-    } else if (function == "Smoke Detector") {
-        log.debug "update to smoke detector"
-        def descriptionText = "Updating device to smoke detector"
-        if (!device.status || device.status == "open" || device.status == "dry" || device.status == "detected_cc") {
-            sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
-        } else {
-            sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
-        }
-    } else if (function == "Smoke Detector Closed as Clear") {
-        log.debug "update to smoke detector closed as clear"
-        def descriptionText = "Updating device to smoke detector closed as clear"
-        if (!device.status || device.status == "open" || device.status == "dry" || device.status == "clear") {
-            sendEvent(name: 'status', value: 'detected_cc', descriptionText: descriptionText, translatable: true)
-        } else {
-            sendEvent(name: 'status', value: 'clear_cc', descriptionText: descriptionText, translatable: true)
-        }
-    } else {
-        log.debug "update to contact sensor"
-        def descriptionText = "Updating device to contact sensor"
-        if (device.status == "dry" || device.status == "clear" || device.status == "detected_cc") {
-            sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
-        } else {
-            sendEvent(name: 'status', value: 'closed', descriptionText: descriptionText, translatable: true)
-        }
+        prev_function = function
     }
 }
 
@@ -421,4 +423,5 @@ def installed() {
 
 def reset() {
     function = "Contact Sensor"
+    prev_function = "Contact Sensor"
 }
