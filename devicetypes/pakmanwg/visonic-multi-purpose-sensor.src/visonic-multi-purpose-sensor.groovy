@@ -22,6 +22,7 @@
  *  2018-02-17 - v01.04 fix smart monitor issues with smoke detector closed as clear
  *  2018-02-20 - v01.05 add switch function type
  *  2018-04-13 - v01.06 add lock function type
+ *  2018-06-20 - v01.07 default to contact sensor if no function was selected
  *
  */
 
@@ -39,7 +40,7 @@ metadata {
         capability "Temperature Measurement"
         capability "Health Check"
         capability "Sensor"
-	capability "Lock"
+        capability "Lock"
 
         command "enrollResponse"
 
@@ -68,9 +69,9 @@ metadata {
                 attributeState "clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
                 attributeState "detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
                 attributeState "on", label: '${name}', icon: "st.switches.switch.on", backgroundColor: "#00A0DC"
-		attributeState "off", label: '${name}', icon: "st.switches.switch.off", backgroundColor: "#ffffff"
-		attributeState "locked", label: '${name}', icon: "st.locks.lock.locked", backgroundColor: "#00A0DC"
-		attributeState "unlocked", label: '${name}', icon: "st.locks.lock.unlocked", backgroundColor: "#ffffff"
+                attributeState "off", label: '${name}', icon: "st.switches.switch.off", backgroundColor: "#ffffff"
+                attributeState "locked", label: '${name}', icon: "st.locks.lock.locked", backgroundColor: "#00A0DC"
+                attributeState "unlocked", label: '${name}', icon: "st.locks.lock.unlocked", backgroundColor: "#ffffff"
             }
         }
 
@@ -215,14 +216,14 @@ private Map getStatus() {
                 state.status = state.alarmSet ? "off" : "on"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getSwitchResult(state.status);
-	    case "Lock":
+            case "Lock":
                 state.status = state.alarmSet ? "unlocked" : "locked"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getLockResult(state.status);
         }
     } else {
-         function = "Contact Sensor"
          state.status = state.alarmSet ? "open" : "closed"
+         sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
          return getContactResult(state.status)
     }
 }
@@ -403,7 +404,7 @@ def updated() {
             log.debug "update to water sensor"
             def descriptionText = "Updating device to water sensor"
             if (device.latestValue("status") == "open" || device.latestValue("status") == "off" ||
-		device.latestValue("status") == "unlocked" ||
+                device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") || 
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
@@ -414,7 +415,7 @@ def updated() {
             log.debug "update to smoke detector"
             def descriptionText = "Updating device to smoke detector"
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" || 
-		device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
+                device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
             } else {
@@ -424,7 +425,7 @@ def updated() {
             log.debug "update to smoke detector closed as clear"
             def descriptionText = "Updating device to smoke detector closed as clear"
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" || 
-		device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
+                device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector")) {
                 sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
             } else {
@@ -434,14 +435,14 @@ def updated() {
             log.debug "update to switch"
             def descriptionText = "Updating device to switch"
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" ||
-		device.latestValue("status") == "unlocked" ||
+                device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector")) {
                 sendEvent(name: 'status', value: 'off', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'on', descriptionText: descriptionText, translatable: true)
             }
-	} else if (function == "Lock") {
+        } else if (function == "Lock") {
             log.debug "update to lock"
             def descriptionText = "Updating device to lock"
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" ||
@@ -455,7 +456,7 @@ def updated() {
             log.debug "update to contact sensor"
             def descriptionText = "Updating device to contact sensor"
             if (device.latestValue("status") == "dry" || device.latestValue("status") == "off" ||
-		device.latestValue("status") == "unlocked" ||
+                device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'open', descriptionText: descriptionText, translatable: true)
@@ -474,6 +475,8 @@ def installed() {
 }
 
 def reset() {
-    function = "Contact Sensor"
+    if (function) {
+        function = "Contact Sensor"
+    }
     state.prev_function = "Contact Sensor"
 }
