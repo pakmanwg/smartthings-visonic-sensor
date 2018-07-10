@@ -70,8 +70,6 @@ metadata {
                 attributeState "wet", label: '${name}', icon: "st.alarm.water.wet", backgroundColor: "#e86d13"
                 attributeState "clear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
                 attributeState "detected", label: '${name}', icon: "st.alarm.smoke.smoke", backgroundColor: "#e86d13"
-                attributeState "carbonMonoxideClear", label: '${name}', icon: "st.alarm.smoke.clear", backgroundColor: "#00A0DC"
-                attributeState "carbonMonoxideDetected", label: '${name}', icon:"st.alarm.carbon-monoxide.carbon-monoxide", backgroundColor:"#e86d13"
                 attributeState "on", label: '${name}', icon: "st.switches.switch.on", backgroundColor: "#00A0DC"
                 attributeState "off", label: '${name}', icon: "st.switches.switch.off", backgroundColor: "#ffffff"
                 attributeState "locked", label: '${name}', icon: "st.locks.lock.locked", backgroundColor: "#00A0DC"
@@ -225,11 +223,11 @@ private Map getStatus() {
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getLockResult(state.status);
             case "Carbon Monoxide Detector":
-                state.status = state.alarmSet ? "cabronMonoxideClear" : "carbonMonoxideDetected"
+                state.status = state.alarmSet ? "clear" : "detected"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getCarbonMonoxideResult(state.status);
             case "Carbon Monoxide Detector Closed as Clear":
-                state.status = state.alarmSet ? "carbonMonoxideDetected" : "carbonMonoxideClear"
+                state.status = state.alarmSet ? "detected" : "clear"
                 sendEvent(name: 'status', value: state.status, descriptionText: descriptionText, translatable: true)
                 return getCarbonMonoxideResult(state.status);
         }
@@ -329,7 +327,7 @@ private Map getSmokeResult(value) {
 private Map getCarbonMonoxideResult(value) {
     log.debug 'Carbon Monoxide Status'
     def linkText = getLinkText(device)
-    def descriptionText = "${linkText} was ${value == 'carbonMonoxideClear' ? 'clear' : 'detected'}"
+    def descriptionText = "${linkText} was ${value == 'clear' ? 'clear' : 'detected'}"
     return [
         name: 'carbonMonoxide',
         value: value,
@@ -430,8 +428,8 @@ def updated() {
                 device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") || 
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector") ||
+                (device.latestValue("status") == "detected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'dry', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'wet', descriptionText: descriptionText, translatable: true)
@@ -442,8 +440,8 @@ def updated() {
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" || 
                 device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector") ||
+                (device.latestValue("status") == "cetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
@@ -454,8 +452,8 @@ def updated() {
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" || 
                 device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector") ||
+                (device.latestValue("status") == "detected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
@@ -467,8 +465,8 @@ def updated() {
                 device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector") ||
+                (device.latestValue("status") == "detected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'off', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'on', descriptionText: descriptionText, translatable: true)
@@ -479,8 +477,8 @@ def updated() {
             if (device.latestValue("status") == "open" || device.latestValue("status") == "dry" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector") ||
+                (device.latestValue("status") == "detected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
                 sendEvent(name: 'status', value: 'unlocked', descriptionText: descriptionText, translatable: true)
             } else {
                 sendEvent(name: 'status', value: 'locked', descriptionText: descriptionText, translatable: true)
@@ -492,10 +490,10 @@ def updated() {
                 device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
-                (device.latestValue("status") == "carbonMonoxideDetected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
-                sendEvent(name: 'status', value: 'carbonMonoxideClear', descriptionText: descriptionText, translatable: true)
+                (device.latestValue("status") == "detected" && state.prev_function == "Carbon Monoxide Detector Closed as Clear")) {
+                sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
             } else {
-                sendEvent(name: 'status', value: 'carbonMonoxideDetected', descriptionText: descriptionText, translatable: true)
+                sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
             }
         } else if (function == "Carbon Monoxide Detector Closed as Clear") {
             log.debug "update to carbon monoxide detector closed as clear"
@@ -504,10 +502,10 @@ def updated() {
                 device.latestValue("status") == "off" || device.latestValue("status") == "unlocked" ||
                 (device.latestValue("status") == "detected" && state.prev_function == "Smoke Detector Closed as Clear") ||
                 (device.latestValue("status") == "clear" && state.prev_function == "Smoke Detector") ||
-                (device.latestValue("status") == "carbonMonoxideClear" && state.prev_function == "Carbon Monoxide Detector")) {
-                sendEvent(name: 'status', value: 'carbonMonoxideDetected', descriptionText: descriptionText, translatable: true)
+                (device.latestValue("status") == "clear" && state.prev_function == "Carbon Monoxide Detector")) {
+                sendEvent(name: 'status', value: 'detected', descriptionText: descriptionText, translatable: true)
             } else {
-                sendEvent(name: 'status', value: 'carbonMonoxideClear', descriptionText: descriptionText, translatable: true)
+                sendEvent(name: 'status', value: 'clear', descriptionText: descriptionText, translatable: true)
             }   
         } else {
             log.debug "update to contact sensor"
