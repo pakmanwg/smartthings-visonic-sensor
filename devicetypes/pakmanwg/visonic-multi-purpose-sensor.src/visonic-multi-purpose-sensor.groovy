@@ -57,7 +57,7 @@ metadata {
     preferences {
         input title: "Temperature Offset", description: "This feature allows you to correct any temperature variations by selecting an offset. Ex: If your sensor consistently reports a temp that's 5 degrees too warm, you'd enter \"-5\". If 3 degrees too cold, enter \"+3\".", displayDuringSetup: false, type: "paragraph", element: "paragraph"
         input "tempOffset", "number", title: "Degrees", description: "Adjust temperature by this many degrees", range: "*..*", displayDuringSetup: false
-        input "function", "enum", title: "Sensor Function", options : ["Contact Sensor", "Water Sensor", "Smoke Detector", "Smoke Detector Closed as Clear", "Switch", "Lock", "Carbon Monoxide Detector", "Carbon Monoxide Detector Cloase as Clear"], defaultValue: "Contact Sensor", required: false, displayDuringSetup: true
+        input "function", "enum", title: "Sensor Function", options : ["Contact Sensor", "Water Sensor", "Smoke Detector", "Smoke Detector Closed as Clear", "Switch", "Lock", "Carbon Monoxide Detector", "Carbon Monoxide Detector Closed as Clear"], defaultValue: "Contact Sensor", required: false, displayDuringSetup: true
     }
 
     tiles(scale: 2) {
